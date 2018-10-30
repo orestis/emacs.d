@@ -21,3 +21,4 @@ tramp
 /var/pcache
 custom.el
 .cache
+projectile.cache

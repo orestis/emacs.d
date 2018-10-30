@@ -102,14 +102,15 @@
 (use-package monokai-theme
   :ensure t
   :config
-  (load-theme 'monokai t))
+  (load-theme 'monokai t)
+  (set-face-attribute 'region nil :background "#aa0" :foreground "#ffffff"))
 
 
 ;; highlight the current line
 (global-hl-line-mode +1)
 
-(use-package ag
-  :ensure t)
+;; (use-package ag
+;;   :ensure t)
 
 (use-package expand-region
   :ensure t
@@ -168,6 +169,8 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
+
+;; highlight various different whitespace chars
 (use-package whitespace
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
@@ -203,6 +206,8 @@
   (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
   (add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode)))
 
+
+;; some neat auto-complete popup mode
 (use-package company
   :ensure t
   :config
@@ -216,6 +221,8 @@
   (setq company-tooltip-flip-when-above t)
   (global-company-mode))
 
+
+;; highlight TODO ccomments
 (use-package hl-todo
   :ensure t
   :config
@@ -235,6 +242,8 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+
+;; save when windows lose focus
 (use-package super-save
   :ensure t
   :config
@@ -247,9 +256,18 @@
   :config
   (which-key-mode +1))
 
+;; HTML etc
 (use-package web-mode
   :ensure t)
 
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode)
+  (setq projectile-enable-caching t))
+
+
+;; super nice suggestions/completion
 (use-package ivy
   :ensure t
   :config
@@ -257,11 +275,13 @@
   (setq ivy-count-format "(%d/%d) ")
   (ivy-mode 1))
 
+;; super nice search
 (use-package swiper
   :ensure t
   :config
   (global-set-key (kbd "C-s") 'swiper))
 
+;; super nice other functionality (ivy/swiper/counsel trifecta)
 (use-package counsel
   :ensure t
   :config
@@ -269,8 +289,28 @@
   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   (global-set-key (kbd "C-c k") 'counsel-ag))
 
+(use-package counsel-projectile
+  :ensure t
+  :config
+  (global-set-key (kbd "M-p") 'counsel-projectile))
+
+;; enter wgrep mode after searching with counsel-ag
+;; edit the buffer then save -- all files are changed
 (use-package wgrep
   :ensure t)
+
+;; pickup .editorconfig files
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
+
+
+
+;; macOS friendly copy-paste-cut keys
+(global-set-key [(meta c)] 'kill-ring-save)
+(global-set-key [(meta v)] 'yank)
 
 ;; MY STUFF TO BE REPLACED
 (setq icomplete-mode t)
@@ -285,7 +325,7 @@
     ("617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(package-selected-packages
    (quote
-    (wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
 
 
 (custom-set-faces
