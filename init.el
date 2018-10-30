@@ -1,4 +1,6 @@
-;; Hello, world
+;;; package --- Summary:
+;;; Commentary:
+;;; Code:
 
 (require 'package)
 
@@ -92,10 +94,16 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-(use-package zenburn-theme
+;; (use-package dracula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'dracula t))
+
+(use-package monokai-theme
   :ensure t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'monokai t))
+
 
 ;; highlight the current line
 (global-hl-line-mode +1)
@@ -166,8 +174,7 @@
     (add-hook hook #'whitespace-mode))
   (add-hook 'before-save-hook #'whitespace-cleanup)
   :config
-  (setq whitespace-line-column 80) ;; limit line length
-  (setq whitespace-style '(face tabs empty trailing lines-tail)))
+  (setq whitespace-style '(face tabs empty trailing)))
 
 (use-package clojure-mode
   :ensure t
@@ -175,6 +182,9 @@
   (add-hook 'clojure-mode-hook #'paredit-mode)
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
+
+(use-package inf-clojure
+  :ensure t)
 
 (use-package cider
   :ensure t
@@ -237,25 +247,50 @@
   :config
   (which-key-mode +1))
 
+(use-package web-mode
+  :ensure t)
+
+(use-package ivy
+  :ensure t
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (ivy-mode 1))
+
+(use-package swiper
+  :ensure t
+  :config
+  (global-set-key (kbd "C-s") 'swiper))
+
+(use-package counsel
+  :ensure t
+  :config
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "C-c k") 'counsel-ag))
+
+(use-package wgrep
+  :ensure t)
+
 ;; MY STUFF TO BE REPLACED
 (setq icomplete-mode t)
 
-(unless (package-installed-p 'clojure-mode)
-  (package-install 'clojure-mode))
-
-(unless (package-installed-p 'cider)
-  (package-install 'cider))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(package-selected-packages
    (quote
-    (rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(font-lock-doc-face ((t (:foreground "light green" :slant oblique)))))
