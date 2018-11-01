@@ -222,7 +222,7 @@
   (global-company-mode))
 
 
-;; highlight TODO ccomments
+;; highlight TODO comments
 (use-package hl-todo
   :ensure t
   :config
@@ -242,6 +242,11 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+(use-package flycheck-pos-tip
+  :ensure t
+  :config
+  (with-eval-after-load 'flycheck
+    (flycheck-pos-tip-mode)))
 
 ;; save when windows lose focus
 (use-package super-save
@@ -292,7 +297,8 @@
 (use-package counsel-projectile
   :ensure t
   :config
-  (global-set-key (kbd "M-p") 'counsel-projectile))
+  (global-set-key (kbd "M-p") 'counsel-projectile)
+  (global-set-key (kbd "M-P") 'counsel-projectile-ag))
 
 ;; enter wgrep mode after searching with counsel-ag
 ;; edit the buffer then save -- all files are changed
@@ -306,7 +312,29 @@
   (editorconfig-mode 1))
 
 
+;; Bozhidars useful functions
+(use-package crux
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'crux-smart-open-line)
+  (global-set-key (kbd "M-O") 'crux-smart-open-line-above)
+  (crux-with-region-or-line kill-region) ;; c-w will kill all line if no region
+  (crux-with-region-or-line kill-ring-save) ;; M-w/M-c will copy all line if no region
+  )
 
+(use-package magit
+  :ensure t
+)
+
+;;;; ----- custom defuns and commands
+
+(setq js-indent-level 2)
+
+(defun my-js-mode-hook ()
+  "Custom `js-mode' behaviours."
+  (setq indent-tabs-mode nil))
+
+(add-hook 'js-mode-hook 'my-js-mode-hook)
 
 ;; macOS friendly copy-paste-cut keys
 (global-set-key [(meta c)] 'kill-ring-save)
@@ -325,7 +353,7 @@
     ("617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(package-selected-packages
    (quote
-    (counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
 
 
 (custom-set-faces
