@@ -186,8 +186,11 @@
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
 
-(use-package inf-clojure
+(use-package flycheck-clojure
   :ensure t)
+
+;; (use-package inf-clojure
+;;   :ensure t)
 
 (use-package cider
   :ensure t
@@ -272,6 +275,14 @@
   (setq projectile-enable-caching t))
 
 
+;; remember previously used M-x commands, show them first
+(use-package smex
+  :ensure t
+  :config
+  (smex-initialize)
+  (setq smex-save-file (expand-file-name ".smex-items" user-emacs-directory)))
+
+
 ;; super nice suggestions/completion
 (use-package ivy
   :ensure t
@@ -326,6 +337,24 @@
   :ensure t
 )
 
+(setq visible-bell 1)
+
+(use-package js2-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  ;;(define-key js2-mode-map (kbd "C-k") #'js2r-kill) ;; this looks broken
+  )
+
+;; this doesn't seem to do what it says on the tin
+(use-package xref-js2
+  :ensure t
+  :config
+  (define-key js-mode-map (kbd "M-.") nil)
+  (add-hook 'js2-mode-hook (lambda ()
+                             (add-hook 'xref-backend-functions
+                                       #'xref-js2-xref-backend nil t))))
 ;;;; ----- custom defuns and commands
 
 (setq js-indent-level 2)
@@ -353,7 +382,7 @@
     ("617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(package-selected-packages
    (quote
-    (magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
 
 
 (custom-set-faces
