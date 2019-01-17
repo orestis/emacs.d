@@ -5,7 +5,10 @@
 (require 'package)
 
 (add-to-list 'package-archives
-             '("melpa" . "https://stable.melpa.org/packages/") t)
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+
 
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
@@ -54,6 +57,9 @@
 (column-number-mode t)
 (size-indication-mode t)
 
+(setq-default cursor-type 'bar)
+
+
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -91,6 +97,13 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+(defun top-join-line ()
+  "Join the current line with the line beneath it."
+  (interactive)
+  (delete-indentation 1))
+
+(global-set-key (kbd "C-S-j") 'top-join-line)
+
 (require 'use-package)
 (setq use-package-verbose t)
 
@@ -109,6 +122,12 @@
 ;; highlight the current line
 (global-hl-line-mode +1)
 
+(use-package dimmer
+  :ensure t
+  :config
+  (setq dimmer-fraction 0.25)
+  (dimmer-mode))
+
 ;; (use-package ag
 ;;   :ensure t)
 
@@ -118,6 +137,7 @@
 
 (use-package paredit
   :ensure t
+  ;; :pin melpa-stable
   ;;:config
   ;;(add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   ;; enable in the *scratch* buffer
@@ -128,10 +148,12 @@
   )
 
 (use-package paren
+  ;;:pin melpa-stable
   :config
   (show-paren-mode +1))
 
 (use-package uniquify
+  ;;:pin melpa-stable
   :config
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-separator "/")
@@ -146,6 +168,7 @@
   (windmove-default-keybindings))
 
 (use-package dired
+  ;;:pin melpa-stable
   :config
   ;; dired - reuse current buffer by pressing 'a'
   (put 'dired-find-alternate-file 'disabled nil)
@@ -162,9 +185,11 @@
   (require 'dired-x))
 
 (use-package rainbow-delimiters
+  ;;:pin melpa-stable
   :ensure t)
 
 (use-package rainbow-mode
+  ;;:pin melpa-stable
   :ensure t
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
@@ -172,6 +197,7 @@
 
 ;; highlight various different whitespace chars
 (use-package whitespace
+  ;;:pin melpa-stable
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook #'whitespace-mode))
@@ -180,19 +206,21 @@
   (setq whitespace-style '(face tabs empty trailing)))
 
 (use-package clojure-mode
+  ;;:pin melpa-stable
   :ensure t
   :config
   (add-hook 'clojure-mode-hook #'paredit-mode)
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
 
-(use-package flycheck-clojure
-  :ensure t)
+;;(use-package flycheck-clojure
+;;  :ensure t)
 
 ;; (use-package inf-clojure
 ;;   :ensure t)
 
 (use-package cider
+  :pin melpa-stable
   :ensure t
   :config
 ;;  (setq nrepl-log-messages t)
@@ -202,6 +230,7 @@
   (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode))
 
 (use-package markdown-mode
+  :pin melpa-stable
   :ensure t
   :config
   ;; TODO: Remove after https://github.com/jrblevin/markdown-mode/pull/335/files is merged
@@ -212,6 +241,7 @@
 
 ;; some neat auto-complete popup mode
 (use-package company
+  :pin melpa-stable
   :ensure t
   :config
   (setq company-idle-delay 0.5)
@@ -227,25 +257,30 @@
 
 ;; highlight TODO comments
 (use-package hl-todo
+  :pin melpa-stable
   :ensure t
   :config
   (global-hl-todo-mode))
 
 (use-package flyspell
+  :pin melpa-stable
   :config
   (when (eq system-type 'windows-nt)
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/"))
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
         ispell-extra-args '("--sug-mode=ultra"))
   (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
+					;(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  )
 
 (use-package flycheck
+  :pin melpa-stable
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package flycheck-pos-tip
+  :pin melpa-stable
   :ensure t
   :config
   (with-eval-after-load 'flycheck
@@ -253,6 +288,7 @@
 
 ;; save when windows lose focus
 (use-package super-save
+  :pin melpa-stable
   :ensure t
   :config
   ;; add integration with ace-window
@@ -260,15 +296,18 @@
   (super-save-mode +1))
 
 (use-package which-key
+  :pin melpa-stable
   :ensure t
   :config
   (which-key-mode +1))
 
 ;; HTML etc
 (use-package web-mode
+  :pin melpa-stable
   :ensure t)
 
 (use-package projectile
+  :pin melpa
   :ensure t
   :config
   (projectile-mode)
@@ -277,6 +316,7 @@
 
 ;; remember previously used M-x commands, show them first
 (use-package smex
+  :pin melpa-stable
   :ensure t
   :config
   (smex-initialize)
@@ -285,6 +325,7 @@
 
 ;; super nice suggestions/completion
 (use-package ivy
+  :pin melpa
   :ensure t
   :config
   (setq ivy-use-virtual-buffers t)
@@ -293,31 +334,46 @@
 
 ;; super nice search
 (use-package swiper
+  :pin melpa
   :ensure t
   :config
   (global-set-key (kbd "C-s") 'swiper))
 
 ;; super nice other functionality (ivy/swiper/counsel trifecta)
 (use-package counsel
+  :pin melpa
   :ensure t
   :config
   (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   (global-set-key (kbd "C-c k") 'counsel-ag))
 
+(define-prefix-command 'fancy-find-map)
+(global-set-key (kbd "M-p") 'fancy-find-map)
+
 (use-package counsel-projectile
+  :pin melpa
   :ensure t
   :config
-  (global-set-key (kbd "M-p") 'counsel-projectile)
-  (global-set-key (kbd "M-P") 'counsel-projectile-ag))
+  (define-key fancy-find-map (kbd "p") 'counsel-projectile)
+  (define-key fancy-find-map (kbd "a") 'counsel-projectile-ag))
 
 ;; enter wgrep mode after searching with counsel-ag
 ;; edit the buffer then save -- all files are changed
 (use-package wgrep
+  :pin melpa-stable
   :ensure t)
+
+
+(use-package deadgrep
+  :pin melpa-stable
+  :ensure t
+  :config
+  (define-key fancy-find-map (kbd "r") 'deadgrep))
 
 ;; pickup .editorconfig files
 (use-package editorconfig
+  :pin melpa-stable
   :ensure t
   :config
   (editorconfig-mode 1))
@@ -325,6 +381,7 @@
 
 ;; Bozhidars useful functions
 (use-package crux
+  :pin melpa-stable
   :ensure t
   :config
   (global-set-key (kbd "M-o") 'crux-smart-open-line)
@@ -333,13 +390,14 @@
   (crux-with-region-or-line kill-ring-save) ;; M-w/M-c will copy all line if no region
   )
 
-(use-package magit
-  :ensure t
-)
+;;(use-package magit
+;;  :ensure t
+;;)
 
 (setq visible-bell 1)
 
 (use-package js2-mode
+  :pin melpa-stable
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -349,12 +407,23 @@
 
 ;; this doesn't seem to do what it says on the tin
 (use-package xref-js2
+  :pin melpa-stable
   :ensure t
   :config
   (define-key js-mode-map (kbd "M-.") nil)
   (add-hook 'js2-mode-hook (lambda ()
                              (add-hook 'xref-backend-functions
                                        #'xref-js2-xref-backend nil t))))
+
+(use-package yaml-mode
+  :pin melpa-stable
+  :ensure t)
+
+(use-package nginx-mode
+  :pin melpa-stable
+  :ensure t)
+;;;; ----- custom defuns and commands
+
 ;;;; ----- custom defuns and commands
 
 (setq js-indent-level 2)
@@ -382,7 +451,7 @@
     ("617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(package-selected-packages
    (quote
-    (flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (dimmer sesman nginx-mode yaml-mode deadgrep flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
 
 
 (custom-set-faces
