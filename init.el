@@ -45,7 +45,7 @@
   kept-old-versions 5    ; and how many of the old
   )
 
-
+(setq exec-path (append exec-path '("~/bin")))
 
 ;; nice scrolling
 (setq scroll-margin 0
@@ -128,6 +128,12 @@
   (setq dimmer-fraction 0.25)
   (dimmer-mode))
 
+(use-package idle-highlight-mode
+  :ensure t)
+
+(use-package neotree
+  :ensure t)
+
 ;; (use-package ag
 ;;   :ensure t)
 
@@ -138,7 +144,10 @@
 (use-package paredit
   :ensure t
   ;; :pin melpa-stable
-  ;;:config
+  :config
+  (define-key paredit-mode-map (kbd "C-,") 'paredit-forward-barf-sexp)
+  (define-key paredit-mode-map (kbd "C-.") 'paredit-forward-slurp-sexp)
+
   ;;(add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   ;; enable in the *scratch* buffer
   ;;(add-hook 'lisp-interaction-mode-hook #'paredit-mode)
@@ -146,6 +155,7 @@
   ;;(add-hook 'lisp-mode-hook #'paredit-mode)
   ;;(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
   )
+
 
 (use-package paren
   ;;:pin melpa-stable
@@ -209,9 +219,15 @@
   ;;:pin melpa-stable
   :ensure t
   :config
+
+  (setq clojure-toplevel-inside-comment-form t)
+
   (add-hook 'clojure-mode-hook #'paredit-mode)
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
+
+(use-package flycheck-joker
+  :ensure t)
 
 ;;(use-package flycheck-clojure
 ;;  :ensure t)
@@ -223,7 +239,25 @@
   :pin melpa-stable
   :ensure t
   :config
-;;  (setq nrepl-log-messages t)
+
+  ;; upon connect, don't show the repl window at all
+  (setq cider-repl-pop-to-buffer-on-connect nil)
+
+  ;; when doing interactive functions that need a symbol,
+  ;; e.g. cider-doc, don't prompt for a symbol -- use the
+  ;; one at point
+  (setq cider-prompt-for-symbol nil)
+
+
+  ;; when evaling the whole buffer, just save already
+  (setq cider-save-file-on-load t)
+
+  ;; syntax highlight inline/overlay buffer results
+  (setq cider-overlays-use-font-lock t)
+
+  ;; when doing "switch-to-repl" C-c C-z -- use the current window,
+  ;; not a random one
+  (setq cider-repl-display-in-current-window t)
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
@@ -278,6 +312,8 @@
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+
 
 (use-package flycheck-pos-tip
   :pin melpa-stable
@@ -422,6 +458,10 @@
 (use-package nginx-mode
   :pin melpa-stable
   :ensure t)
+
+(use-package graphql-mode
+  :pin melpa
+  :ensure t)
 ;;;; ----- custom defuns and commands
 
 ;;;; ----- custom defuns and commands
@@ -438,6 +478,11 @@
 (global-set-key [(meta c)] 'kill-ring-save)
 (global-set-key [(meta v)] 'yank)
 
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
 ;; MY STUFF TO BE REPLACED
 (setq icomplete-mode t)
 
@@ -448,10 +493,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(package-selected-packages
    (quote
-    (dimmer sesman nginx-mode yaml-mode deadgrep flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (spacemacs-theme material-theme leuven-theme parinfer-smart neotree idle-highlight-mode flycheck-joker graphql-mode dimmer sesman nginx-mode yaml-mode deadgrep flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
 
 
 (custom-set-faces
