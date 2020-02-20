@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(server-start)
+
 (require 'package)
 
 (add-to-list 'package-archives
@@ -112,12 +114,38 @@
 ;;   :config
 ;;   (load-theme 'dracula t))
 
-(use-package monokai-theme
-  :ensure t
-  :config
-  (load-theme 'monokai t)
-  (set-face-attribute 'region nil :background "#aa0" :foreground "#ffffff"))
+;; (use-package monokai-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'monokai t)
+;;   (set-face-attribute 'region nil :background "#aa0" :foreground "#ffffff"))
 
+
+;; (use-package zenburn-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'zenburn t))
+
+;; (use-package spacemacs-theme
+;;  :ensure t
+;;  :pin melpa
+;;  :config
+;;  (load-theme 'spacemacs-dark t))
+
+(load-theme 'spacemacs-light t)
+
+
+;; (use-package dracula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'dracula t))
+;; (use-package kaolin-themes
+;;   :ensure t
+;;   :pin melpa
+;;   :config
+;;   (load-theme 'kaolin-light t)
+;;   ;; 					;(kaolin-treemacs-theme)
+;;   )
 
 ;; highlight the current line
 (global-hl-line-mode +1)
@@ -125,7 +153,7 @@
 (use-package dimmer
   :ensure t
   :config
-  (setq dimmer-fraction 0.25)
+  (setq dimmer-fraction 0.10)
   (dimmer-mode))
 
 (use-package idle-highlight-mode
@@ -215,6 +243,14 @@
   :config
   (setq whitespace-style '(face tabs empty trailing)))
 
+
+
+;(use-package flycheck-joker
+;  :ensure t)
+
+(use-package flycheck-clj-kondo
+  :ensure t)
+
 (use-package clojure-mode
   ;;:pin melpa-stable
   :ensure t
@@ -222,12 +258,10 @@
 
   (setq clojure-toplevel-inside-comment-form t)
 
+  (require 'flycheck-clj-kondo)
   (add-hook 'clojure-mode-hook #'paredit-mode)
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
-
-(use-package flycheck-joker
-  :ensure t)
 
 ;;(use-package flycheck-clojure
 ;;  :ensure t)
@@ -493,10 +527,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "617341f1be9e584692e4f01821716a0b6326baaec1749e15d88f6cc11c288ec6" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
+    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
  '(package-selected-packages
    (quote
-    (spacemacs-theme material-theme leuven-theme parinfer-smart neotree idle-highlight-mode flycheck-joker graphql-mode dimmer sesman nginx-mode yaml-mode deadgrep flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag))))
+    (flycheck-clj-kondo kaolin-themes zenburn spacemacs-theme material-theme leuven-theme parinfer-smart neotree idle-highlight-mode flycheck-joker graphql-mode dimmer sesman nginx-mode yaml-mode deadgrep flycheck-clojure xref-js2 js2-mode smex magit crux flycheck-pos-tip counsel-projectile projectile editorconfig wgrep counsel counsel-ag swiper ivy web-mode inf-clojure monokai-theme color-theme-sanityinc-tomorrow solarized-theme dracula-theme rainbow-delimiters zenburn-theme which-key use-package super-save rainbow-mode paredit markdown-mode hl-todo flycheck expand-region company cider ag)))
+ '(window-divider-mode nil))
 
 
 (custom-set-faces
@@ -504,4 +539,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-doc-face ((t (:foreground "light green" :slant oblique)))))
+ )
