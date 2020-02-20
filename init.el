@@ -58,6 +58,7 @@
 (line-number-mode t)
 (column-number-mode t)
 (size-indication-mode t)
+(tool-bar-mode -1)
 
 (setq-default cursor-type 'bar)
 
@@ -133,6 +134,32 @@
 ;;  (load-theme 'spacemacs-dark t))
 
 (load-theme 'spacemacs-light t)
+
+
+;; (use-package dracula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'dracula t))
+;; (use-package kaolin-themes
+;;   :ensure t
+;;   :pin melpa
+;;   :config
+;;   (load-theme 'kaolin-light t)
+;;   ;; 					;(kaolin-treemacs-theme)
+;;   )
+
+;; (use-package zenburn-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'zenburn t))
+
+;; (use-package spacemacs-theme
+;;  :ensure t
+;;  :pin melpa
+;;  :config
+;;  (load-theme 'spacemacs-dark t))
+
+;;(load-theme 'spacemacs-light t)
 
 
 ;; (use-package dracula-theme
